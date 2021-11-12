@@ -1,7 +1,7 @@
 {
     "$schema": "https://version.goauthentik.io/schema.json",
     "stable": {
-        "version": "2021.10.3",
+        "version": "2021.10.4",
         "changelog": "See https://goauthentik.io/docs/releases/2021.10",
         "reason": "bugfix"
     }
