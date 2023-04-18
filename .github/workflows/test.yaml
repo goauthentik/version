@@ -1,0 +1,26 @@
+name: test-version
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: compose
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - id: version
+        run: |
+          echo "version=$(cat version.json | jq .stable.version -r)" >> $GITHUB_OUTPUT
+      - name: Setup authentik
+        uses: goauthentik/action-setup-authentik@main
+        id: setup
+        with:
+          version: ${{ steps.version.outputs.version }}
+          sentry_env: goauthentik-version-ci
