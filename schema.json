@@ -33,6 +33,7 @@
             "required": [
                 "version",
                 "changelog",
+                "changelog_url",
                 "reason"
             ],
             "properties": {
@@ -54,6 +55,15 @@
                     "default": "",
                     "examples": [
                         "See https://goauthentik.io/docs/releases/2021.8#fixed-in-202185"
+                    ]
+                },
+                "changelog_url": {
+                    "$id": "#/properties/stable/properties/changelog_url",
+                    "type": "string",
+                    "title": "A URL to the changelog",
+                    "default": "",
+                    "examples": [
+                        "https://goauthentik.io/docs/releases/2021.8#fixed-in-202185"
                     ]
                 },
                 "reason": {
