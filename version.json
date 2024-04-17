@@ -1,8 +1,8 @@
 {
     "$schema": "https://version.goauthentik.io/schema.json",
     "stable": {
-        "version": "2024.2.2",
-        "changelog": "See https://docs.goauthentik.io/docs/releases/2024.2#fixed-in-202422",
+        "version": "2024.2.3",
+        "changelog": "See https://docs.goauthentik.io/docs/releases/2024.2#fixed-in-202423",
         "reason": "bugfix"
     }
 }
