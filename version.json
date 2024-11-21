@@ -1,9 +1,9 @@
 {
     "$schema": "https://version.goauthentik.io/schema.json",
     "stable": {
-        "version": "2024.10.3",
-        "changelog": "See https://docs.goauthentik.io/docs/releases/2024.10#fixed-in-2024103",
-        "changelog_url": "https://docs.goauthentik.io/docs/releases/2024.10#fixed-in-2024103",
+        "version": "2024.10.4",
+        "changelog": "See https://docs.goauthentik.io/docs/releases/2024.10#fixed-in-2024104",
+        "changelog_url": "https://docs.goauthentik.io/docs/releases/2024.10#fixed-in-2024104",
         "reason": "security"
     }
 }
