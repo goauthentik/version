@@ -8,7 +8,7 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     assignees:
-      - BeryJu
+      - "@goauthentik/backend"
   - package-ecosystem: uv
     directory: "/"
     schedule:
@@ -16,4 +16,4 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     assignees:
-      - BeryJu
+      - "@goauthentik/backend"
