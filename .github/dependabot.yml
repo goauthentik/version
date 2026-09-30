@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directories:
+      - /
+    schedule:
+      interval: daily
+      time: "04:00"
+    open-pull-requests-limit: 10
+    assignees:
+      - BeryJu
+  - package-ecosystem: uv
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+    open-pull-requests-limit: 10
+    assignees:
+      - BeryJu
