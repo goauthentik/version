@@ -1,0 +1,1 @@
+{"$schema": "https://version.goauthentik.io/schema.json", "stable": {"version": "2023.1.3", "changelog": "See https://goauthentik.io/docs/releases/2023.1#fixed-in-202313", "changelog_url": "https://goauthentik.io/docs/releases/2023.1#fixed-in-202313", "reason": "bugfix"}}
