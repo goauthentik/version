@@ -58,7 +58,7 @@
                     ]
                 },
                 "changelog_url": {
-                    "$id": "#/properties/stable/properties/changelog",
+                    "$id": "#/properties/stable/properties/changelog_url",
                     "type": "string",
                     "title": "A URL to the changelog website",
                     "description": "An explanation about the purpose of this instance.",

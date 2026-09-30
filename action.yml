@@ -1,0 +1,66 @@
+name: "authentik Version Bump"
+description: "Bumps the authentik version repository and opens a pull request"
+inputs:
+  product:
+    description: "Product to bump"
+    required: true
+  new-version:
+    description: "New version number"
+    required: true
+  changelog-url:
+    description: "Changelog URL"
+    required: false
+  reason:
+    description: "Reason"
+    required: false
+  token:
+    description: "GitHub token with push access to the version repository"
+    required: true
+  repository:
+    description: "Version repository to bump"
+    required: false
+    default: "goauthentik/version"
+  github-app-slug:
+    description: "Github App slug for the bot account creating the PR"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout version repository
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+      with:
+        repository: ${{ inputs.repository }}
+        token: ${{ inputs.token }}
+        path: .version-bump
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+    - name: Bump
+      run: uv run --project ${{ github.action_path }} ${{ github.action_path }}/bump.py
+      shell: bash
+      id: bump
+      env:
+        INPUT_PRODUCT: ${{ inputs.product }}
+        INPUT_NEW_VERSION: ${{ inputs.new-version }}
+        INPUT_CHANGELOG_URL: ${{ inputs.changelog-url }}
+        INPUT_REASON: ${{ inputs.reason }}
+        ROOT: ${{ github.workspace }}/.version-bump
+    - id: get-user-id
+      name: Get GitHub app user ID
+      shell: bash
+      run: echo "user-id=$(gh api "/users/${INPUT_APP_SLUG}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+      env:
+        INPUT_APP_SLUG: ${{ inputs.github-app-slug }}
+        GH_TOKEN: ${{ inputs.token }}
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v7
+      with:
+        token: ${{ inputs.token }}
+        path: .version-bump
+        branch: bump-${{ inputs.product }}-${{ inputs.new-version }}
+        commit-message: "version: bump ${{ inputs.product }} to ${{ inputs.new-version }}"
+        title: "version: bump ${{ inputs.product }} to ${{ inputs.new-version }}"
+        body: "See ${{ steps.bump.outputs.changelog_url }}"
+        delete-branch: true
+        signoff: true
+        author: "${{ inputs.github-app-slug }}[bot] <${{ steps.get-user-id.outputs.user-id }}+${{ inputs.github-app-slug }}[bot]@users.noreply.github.com>"
