@@ -38,10 +38,10 @@ data = {
 version_root = ROOT / "versions" / INPUT_PRODUCT / str(parsed_new_version.major)
 version_root.mkdir(parents=True, exist_ok=True)
 version_file = version_root / f"{version_family}.json"
-version_file.write_text(dumps(data))
+version_file.write_text(dumps(data) + "\n")
 version_file.copy(ROOT / "versions" / INPUT_PRODUCT / "latest.json")
 # Legacy version file
 if INPUT_PRODUCT == "authentik":
-    (ROOT / "version.json").write_text(dumps(data))
+    (ROOT / "version.json").write_text(dumps(data) + "\n")
 
 write_output("changelog_url", INPUT_CHANGELOG_URL)
