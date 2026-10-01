@@ -11,8 +11,8 @@ INPUT_REASON = getenv("INPUT_REASON")
 ROOT = Path(getenv("ROOT"))
 
 def write_output(key: str, value: str):
-    with open(getenv("GITHUB_OUTPUT")) as _o:
-        _o.write(f"{key}={value}")
+    with open(getenv("GITHUB_OUTPUT"), "a") as _o:
+        _o.write(f"{key}={value}\n")
 
 parsed_new_version = parse(INPUT_NEW_VERSION)
 version_family = f"{parsed_new_version.major}.{parsed_new_version.minor}"
