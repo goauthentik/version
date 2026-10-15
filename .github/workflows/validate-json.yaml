@@ -16,3 +16,4 @@ jobs:
       - run: |
           shopt -s globstar
           uvx check-jsonschema --schemafile schema.json version.json versions/**/*.json
+      - run: uv run check.py
