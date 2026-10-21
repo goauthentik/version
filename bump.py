@@ -39,9 +39,14 @@ version_root = ROOT / "versions" / INPUT_PRODUCT / str(parsed_new_version.major)
 version_root.mkdir(parents=True, exist_ok=True)
 version_file = version_root / f"{version_family}.json"
 version_file.write_text(dumps(data) + "\n")
-version_file.copy(ROOT / "versions" / INPUT_PRODUCT / "latest.json")
-# Legacy version file
-if INPUT_PRODUCT == "authentik":
-    (ROOT / "version.json").write_text(dumps(data) + "\n")
+# Only the newest family is "latest", bumps of older families leave it alone
+newest_family = max(
+    (ROOT / "versions" / INPUT_PRODUCT).glob("*/*.json"), key=lambda f: parse(f.stem)
+)
+if newest_family == version_file:
+    version_file.copy(ROOT / "versions" / INPUT_PRODUCT / "latest.json")
+    # Legacy version file
+    if INPUT_PRODUCT == "authentik":
+        (ROOT / "version.json").write_text(dumps(data) + "\n")
 
 write_output("changelog_url", INPUT_CHANGELOG_URL)
