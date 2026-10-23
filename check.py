@@ -14,7 +14,7 @@ def build_index(product: Path) -> str:
     families = sorted(product.glob("*/*.json"), key=lambda f: parse(f.stem), reverse=True)
     return dumps({
         "families": [
-            {"family": f.stem, "path": str(f.relative_to(product)), "stable": load(f)["stable"]}
+            {"family": f.stem, "version": load(f)["stable"]["version"]}
             for f in families
         ]
     }) + "\n"

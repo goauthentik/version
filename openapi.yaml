@@ -42,7 +42,7 @@ paths:
         - $ref: "#/components/parameters/product"
       responses:
         "200":
-          description: Every family with its latest release, newest family first
+          description: Every family with its latest patch, newest family first
           content:
             application/json:
               schema:
@@ -126,14 +126,13 @@ components:
           description: Newest family first.
           items:
             type: object
-            required: [family, path, stable]
+            required: [family, version]
             properties:
               family:
                 type: string
+                description: Details at `/versions/{product}/{major}/{family}.json`.
                 examples: ["2026.8"]
-              path:
+              version:
                 type: string
-                description: Family file path relative to `/versions/{product}/`.
-                examples: ["2026/2026.8.json"]
-              stable:
-                $ref: "#/components/schemas/Release"
+                description: Latest stable patch of the family.
+                examples: ["2026.8.4"]
