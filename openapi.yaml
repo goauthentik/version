@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: authentik version info
+  description: Static version info for goauthentik products, served as-is from https://github.com/goauthentik/version.
+  version: "1"
+servers:
+  - url: https://version.goauthentik.io
+paths:
+  /version.json:
+    get:
+      summary: Latest authentik version (legacy)
+      description: Read by older authentik versions. Same content as `/versions/authentik/latest.json`.
+      operationId: getLegacyVersion
+      deprecated: true
+      responses:
+        "200":
+          description: Latest stable authentik release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionFile"
+  /versions/{product}/latest.json:
+    get:
+      summary: Latest release of the newest family
+      operationId: getLatest
+      parameters:
+        - $ref: "#/components/parameters/product"
+      responses:
+        "200":
+          description: Latest stable release of the product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionFile"
+        "404":
+          description: Unknown product
+  /versions/{product}/index.json:
+    get:
+      summary: All families of a product
+      operationId: getIndex
+      parameters:
+        - $ref: "#/components/parameters/product"
+      responses:
+        "200":
+          description: Every family with its latest release, newest family first
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Index"
+        "404":
+          description: Unknown product
+  /versions/{product}/{major}/{family}.json:
+    get:
+      summary: Latest release of one family
+      operationId: getFamily
+      parameters:
+        - $ref: "#/components/parameters/product"
+        - name: major
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "^[0-9]+$"
+            examples: ["2026"]
+        - name: family
+          in: path
+          required: true
+          description: "`<major>.<minor>`"
+          schema:
+            type: string
+            pattern: "^[0-9]+\\.[0-9]+$"
+            examples: ["2026.8"]
+      responses:
+        "200":
+          description: Latest stable release of the family
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionFile"
+        "404":
+          description: Unknown product or family
+components:
+  parameters:
+    product:
+      name: product
+      in: path
+      required: true
+      schema:
+        type: string
+        examples: ["authentik", "platform"]
+  schemas:
+    Release:
+      type: object
+      required: [version, changelog, changelog_url, reason]
+      properties:
+        version:
+          type: string
+          examples: ["2026.8.4"]
+        changelog:
+          type: string
+          deprecated: true
+          description: "`See <changelog_url>`, or empty when there is no changelog."
+          examples: ["See https://docs.goauthentik.io/releases/2026.8/#fixed-in-202684"]
+        changelog_url:
+          type: string
+          description: Empty when there is no changelog.
+          examples: ["https://docs.goauthentik.io/releases/2026.8/#fixed-in-202684"]
+        reason:
+          type: string
+          enum: [bugfix, feature, security, other]
+    VersionFile:
+      type: object
+      required: [stable]
+      properties:
+        $schema:
+          type: string
+          examples: ["https://version.goauthentik.io/schema.json"]
+        stable:
+          $ref: "#/components/schemas/Release"
+    Index:
+      type: object
+      required: [families]
+      properties:
+        families:
+          type: array
+          description: Newest family first.
+          items:
+            type: object
+            required: [family, path, stable]
+            properties:
+              family:
+                type: string
+                examples: ["2026.8"]
+              path:
+                type: string
+                description: Family file path relative to `/versions/{product}/`.
+                examples: ["2026/2026.8.json"]
+              stable:
+                $ref: "#/components/schemas/Release"
