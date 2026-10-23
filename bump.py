@@ -4,6 +4,8 @@ from pathlib import Path
 
 from packaging.version import parse
 
+from check import build_index
+
 INPUT_PRODUCT = getenv("INPUT_PRODUCT")
 INPUT_NEW_VERSION = getenv("INPUT_NEW_VERSION")
 INPUT_CHANGELOG_URL = getenv("INPUT_CHANGELOG_URL")
@@ -48,5 +50,9 @@ if newest_family == version_file:
     # Legacy version file
     if INPUT_PRODUCT == "authentik":
         (ROOT / "version.json").write_text(dumps(data) + "\n")
+
+(ROOT / "versions" / INPUT_PRODUCT / "index.json").write_text(
+    build_index(ROOT / "versions" / INPUT_PRODUCT)
+)
 
 write_output("changelog_url", INPUT_CHANGELOG_URL)
